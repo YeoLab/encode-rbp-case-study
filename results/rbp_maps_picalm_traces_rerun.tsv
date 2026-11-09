@@ -1,0 +1,9 @@
+dataset	knockdown	rep	exon	set	region	peak_nt	max_signal_x1e4	signal_0_100nt_x1e4
+QKI_K562_5007	QKI_HepG2	rep1	exon13	included-upon-knockdown	3ss	-33	75.4	4451.8
+QKI_K562_5007	QKI_HepG2	rep1	exon24nt	excluded-upon-knockdown	5ss	60	53.5	2845.7
+QKI_K562_5007	QKI_HepG2	rep2	exon13	included-upon-knockdown	3ss	-43	97.3	5964.7
+QKI_K562_5007	QKI_HepG2	rep2	exon24nt	excluded-upon-knockdown	5ss	60	68.4	3558.5
+QKI_HepG2_ENCSR570WLM	QKI_HepG2	rep1	exon13	included-upon-knockdown	3ss	-11	55.2	2337.0
+QKI_HepG2_ENCSR570WLM	QKI_HepG2	rep1	exon24nt	excluded-upon-knockdown	5ss	68	51.0	2360.0
+QKI_HepG2_ENCSR570WLM	QKI_HepG2	rep2	exon13	included-upon-knockdown	3ss	11	27.6	1039.7
+QKI_HepG2_ENCSR570WLM	QKI_HepG2	rep2	exon24nt	excluded-upon-knockdown	5ss	60	61.8	2535.8

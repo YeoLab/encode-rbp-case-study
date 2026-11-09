@@ -1,0 +1,2 @@
+ID	GeneID	geneSymbol	chr	strand	exonStart_0base	exonEnd	upstreamES	upstreamEE	downstreamES	downstreamEE	ID	IJC_SAMPLE_1	SJC_SAMPLE_1	IJC_SAMPLE_2	SJC_SAMPLE_2	IncFormLen	SkipFormLen	PValue	FDR	IncLevel1	IncLevel2	IncLevelDifference
+21336	"ENSG00000073921.18_13"	"PICALM"	chr11	-	85689112	85689136	85687665	85687725	85692171	85692271	21336	46,36	171,152	166,99	56,29	123	99	0	0.0	0.178,0.16	0.705,0.733	-0.55

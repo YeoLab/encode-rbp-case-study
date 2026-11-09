@@ -1,0 +1,20 @@
+# macOS, Python and Jupyter caches
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+
+# large data: downloaded or computed by the notebooks into data/ (or CASE_STUDY_DATA), not stored here
+/data
+*.bam
+*.bai
+*.bw
+*.bigWig
+*.bigwig
+
+# outputs of the free-Colab run
+notebooks/workflow/colab_output*/
+notebooks/workflow/colab_data*/
+
+# exception: the small BAMs for the free-Colab workflow (about 90 MB)
+!notebooks/workflow/lite_data/**/*.bam
+!notebooks/workflow/lite_data/**/*.bai

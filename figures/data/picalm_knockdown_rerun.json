@@ -1,0 +1,82 @@
+[
+ {
+  "knockdown": "QKI_K562",
+  "exon": "exon13",
+  "PSI_control": [
+   0.254,
+   0.263
+  ],
+  "PSI_KD": [
+   0.483,
+   0.477
+  ],
+  "dPSI": 0.221,
+  "FDR": 0.0,
+  "IJC_KD": "789,901",
+  "SJC_KD": "422,493",
+  "IJC_control": "368,512",
+  "SJC_control": "540,719",
+  "log2FC": -0.8547965,
+  "log2FC_batch_normalized": -1.2118053496
+ },
+ {
+  "knockdown": "QKI_HepG2",
+  "exon": "exon13",
+  "PSI_control": [
+   0.199,
+   0.206
+  ],
+  "PSI_KD": [
+   0.68,
+   0.672
+  ],
+  "dPSI": 0.474,
+  "FDR": 0.0,
+  "IJC_KD": "272,242",
+  "SJC_KD": "64,59",
+  "IJC_control": "57,44",
+  "SJC_control": "115,85",
+  "log2FC": -3.3613870218,
+  "log2FC_batch_normalized": -6.0596459722
+ },
+ {
+  "knockdown": "QKI_K562",
+  "exon": "exon24nt",
+  "PSI_control": [
+   0.146,
+   0.109
+  ],
+  "PSI_KD": [
+   0.026,
+   0.033
+  ],
+  "dPSI": -0.098,
+  "FDR": 0.0,
+  "IJC_KD": "22,31",
+  "SJC_KD": "662,731",
+  "IJC_control": "102,97",
+  "SJC_control": "480,641",
+  "log2FC": -0.8547965,
+  "log2FC_batch_normalized": -1.2118053496
+ },
+ {
+  "knockdown": "QKI_HepG2",
+  "exon": "exon24nt",
+  "PSI_control": [
+   0.705,
+   0.733
+  ],
+  "PSI_KD": [
+   0.178,
+   0.16
+  ],
+  "dPSI": -0.55,
+  "FDR": 0.0,
+  "IJC_KD": "46,36",
+  "SJC_KD": "171,152",
+  "IJC_control": "166,99",
+  "SJC_control": "56,29",
+  "log2FC": -3.3613870218,
+  "log2FC_batch_normalized": -6.0596459722
+ }
+]

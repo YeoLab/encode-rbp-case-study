@@ -1,0 +1,8 @@
+subject	sample	file	full_bam	paired_input	mapped_F260	mapped_records	kept_reads
+QKI_K562_5007	IN_1	QKI_K562_5007_IN_1.lite.bam	QKI_K562_5007_IN_1.genome.Aligned.sort.dedup.bam	False	13404534	13404534	96266
+QKI_K562_5007	IN_2	QKI_K562_5007_IN_2.lite.bam	QKI_K562_5007_IN_2.genome.Aligned.sort.dedup.bam	False	16868656	16868656	141993
+QKI_K562_5007	IP_1	QKI_K562_5007_IP_1.lite.bam	QKI_K562_5007_IP_1.genome.Aligned.sort.dedup.bam	False	12392574	12392574	137745
+QKI_K562_5007	IP_2	QKI_K562_5007_IP_2.lite.bam	QKI_K562_5007_IP_2.genome.Aligned.sort.dedup.bam	False	11572338	11572338	114914
+QKI_HepG2_ENCSR570WLM	IN_1	QKI_HepG2_ENCSR570WLM_IN_1.lite.bam	QKI_HepG2_ENCSR570WLM_IN_1.genome.Aligned.sort.dedup.R2.bam	False	14749909	14749909	150501
+QKI_HepG2_ENCSR570WLM	IP_1	QKI_HepG2_ENCSR570WLM_IP_1.lite.bam	QKI_HepG2_ENCSR570WLM_IP_1.genome.Aligned.sort.dedup.R2.bam	False	12764048	12764048	170625
+QKI_HepG2_ENCSR570WLM	IP_2	QKI_HepG2_ENCSR570WLM_IP_2.lite.bam	QKI_HepG2_ENCSR570WLM_IP_2.genome.Aligned.sort.dedup.R2.bam	False	8021236	8021236	103746

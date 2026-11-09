@@ -1,0 +1,7 @@
+knockdown	set	hg19	one per exon	GRCh38	PICALM exons in set
+QKI_K562	included-upon-knockdown	1032	882	880	exon13
+QKI_K562	excluded-upon-knockdown	1039	867	862	exon24nt
+QKI_K562	native-cassette-background	3393	2581	2563	
+QKI_HepG2	included-upon-knockdown	1906	1524	1514	exon13
+QKI_HepG2	excluded-upon-knockdown	1127	916	913	exon24nt
+QKI_HepG2	native-cassette-background	2936	2280	2267	
