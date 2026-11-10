@@ -4,11 +4,13 @@ Case Study 3 draft figure: QKI regulates two PICALM cassette exons in opposite d
   MAP_DIR=maps_stranded python make_fig.py      ->  CS3_PICALM_QKI_draft.png / .pdf   (numpy, pandas, matplotlib)
 
 Panels: (a) workflow; (b) RBP-ARK windows of the 3 QKI eCLIP datasets at the 150-nt exon with GENCODE v40 isoforms;
-(c) the same rows at the 24-nt exon; (d) PSI per replicate for both exons in the K562 and HepG2 QKI knockdowns, above
-HepG2 junction reads for each exon; (e) rbp-maps splice maps for the HepG2 QKI knockdown with two eCLIPs (ENCORE2 K562
-5007 and ENCODE3 HepG2 ENCSR570WLM, replicate 1), each with both PICALM exons' own traces.
-Panel d's junction cartoons use the bar colors: control shRNA gray, QKI shRNA purple (flanking exons and the junction
-with more reads).
+(c) the same rows at the 24-nt exon; (d) PSI per replicate for both exons in the K562 and HepG2 QKI knockdowns;
+(e) rbp-maps splice maps for the HepG2 QKI knockdown with two eCLIPs (ENCORE2 K562 5007 and ENCODE3 HepG2 ENCSR570WLM,
+replicate 1), each with both PICALM exons' own traces.
+Above d and e, the two splicing models (the 150-nt exon, more included after knockdown; the 24-nt exon, less included)
+with their HepG2 junction reads, drawn on the splice maps' layout: shaded = exon, unshaded = intron. The cassette exon is
+teal (more included) or gold (less included); flanking exons and the junction with more reads use the bar colors
+(control shRNA gray, QKI shRNA purple).
 
 Inputs:
   picalm_locus.json   notebook 00 (5 Nov 2026 run): RBP-ARK windows near PICALM; transcripts from GENCODE v40
