@@ -18,3 +18,6 @@ notebooks/workflow/colab_data*/
 # exception: the small BAMs for the free-Colab workflow (about 90 MB)
 !notebooks/workflow/lite_data/**/*.bam
 !notebooks/workflow/lite_data/**/*.bai
+
+# Word/Office lock files
+~$*
