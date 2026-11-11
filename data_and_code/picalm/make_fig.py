@@ -52,6 +52,17 @@ MO = os.environ.get("MAP_DIR", "maps")
 SOURCE_NOTE = os.environ.get("MAP_NOTE", "")
 EX150["span"], EX24["span"] = tuple(LOC["exons"]["exon13"]), tuple(LOC["exons"]["exon24nt"])
 
+def warn_if_cut_off(fig):
+    """Warns about any axes or figure text that reaches past the edge of `fig`'s canvas, i.e. would be cut off."""
+    fig.canvas.draw()
+    r, W, H = fig.canvas.get_renderer(), fig.bbox.width, fig.bbox.height
+    items = [(a.get_title() or "axes", a.get_tightbbox(r)) for a in fig.axes]
+    items += [(t.get_text(), t.get_window_extent(r)) for t in fig.texts]
+    for name, bb in items:
+        if bb is not None and (bb.x0 < -1 or bb.y0 < -1 or bb.x1 > W + 1 or bb.y1 > H + 1):
+            print(f"warning: cut off at the figure edge: {name[:60]!r}")
+
+
 fig = plt.figure(figsize=(7.2, 10.4))
 G = gs.GridSpec(3, 2, figure=fig, height_ratios=[0.42, 0.82, 1.95], width_ratios=[1, 1.1],
                 hspace=0.36, wspace=0.55, left=0.17, right=0.98, top=0.975, bottom=0.125)
@@ -62,37 +73,67 @@ def letter(x, y, s):
     fig.text(x, y, s, fontsize=10, fontweight="bold", va="bottom")
 
 
-# ---------- a: workflow ----------
+# ---------- a: workflow, two swimlanes numbered by workflow notebook, converging on the integration ----------
 _pa = G[0, :].get_position(fig)
 axa = fig.add_axes([0.07, _pa.y0 - 0.03, 0.91, _pa.height + 0.03]); axa.axis("off"); axa.set_xlim(-1.5, 101); axa.set_ylim(-1.5, 44)
 letter(0.015, _pa.y1 - 0.012, "a")
 
 
-def box(x, y, w, h, title, body, edge):
-    """Draws one panel-a box at (`x`, `y`), `w` wide and `h` high, with a bold `title`, the `body` text below it and an
-    `edge` color.
-    """
-    axa.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.25,rounding_size=1.2", fc="#fcfcfb", ec=edge, lw=0.9, clip_on=False))
-    axa.text(x + w / 2, y + h - 2.4, title, ha="center", va="top", fontsize=6.5, fontweight="bold")
-    axa.text(x + w / 2, y + h - 7.0, body, ha="center", va="top", fontsize=5.8, color=INK2, linespacing=1.25)
+def badge(x, y, n, col):
+    """Draws the numbered circle for workflow notebook `n`, centred at panel-a point (`x`, `y`)."""
+    axa.plot([x], [y], "o", ms=9.5, mfc=col, mec="white", mew=0.8, zorder=5, clip_on=False)
+    axa.text(x, y - 0.1, str(n), ha="center", va="center", fontsize=5.6, color="white", fontweight="bold", zorder=6)
 
 
-def arrow(x0, y0, x1, y1):
-    """Draws a panel-a arrow from (`x0`, `y0`) to (`x1`, `y1`)."""
-    axa.annotate("", xy=(x1, y1), xytext=(x0, y0), arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=0.8))
+LANES = [(22.3, BLUE, "#e9f1fc", BDARK, 1, "eCLIP BINDING  ·  rbp-ark.com",
+          [("Gene search", "PICALM in Coordinate View\nQKI-bound windows"),
+           ("Experiment detail", "3 QKI eCLIPs (K562 ×2, HepG2)\nQC · track hub · windows .tsv"),
+           ("Download", "BDBag or API file list\nGlobus for bulk")]),
+         (0.0, ORANGE, "#fdeee7", ODARK, 4, "KNOCKDOWN SPLICING  ·  encodeproject.org",
+          [("shRNA RNA-seq", "QKI vs control shRNA\nK562 · HepG2"),
+           ("Differential splicing", "rMATS skipped exons\nhg19 → GRCh38"),
+           ("ΔPSI per exon", "knockdown − control\nfor each cassette exon")])]
+LH, CW, GAP, X0 = 20.0, 21.6, 2.6, 0.6
+for y0, col, tint, dark, n0, label, steps in LANES:
+    axa.add_patch(FancyBboxPatch((-1.0, y0), 74.6, LH, boxstyle="round,pad=0,rounding_size=1.4", fc=tint, ec="none", zorder=0))
+    axa.text(0.4, y0 + LH - 0.8, label, fontsize=5.4, color=dark, fontweight="bold", va="top")
+    top = y0 + LH - 4.2
+    for i, (title, body) in enumerate(steps):
+        x = X0 + i * (CW + GAP)
+        axa.add_patch(FancyBboxPatch((x, y0 + 1.0), CW, top - y0 - 1.0, boxstyle="round,pad=0,rounding_size=1.0",
+                                     fc="white", ec=col, lw=0.7, zorder=2))
+        badge(x + 2.0, top - 3.4, n0 + i, col)
+        axa.text(x + 3.9, top - 3.4, title, fontsize=6.2, fontweight="bold", va="center", zorder=3)
+        axa.text(x + 1.2, top - 6.6, body, fontsize=5.3, color=INK2, va="top", linespacing=1.3, zorder=3)
+        if i < 2:
+            ya = y0 + (top - y0) / 2 + 0.5
+            axa.annotate("", xy=(x + CW + GAP - 0.3, ya), xytext=(x + CW + 0.3, ya),
+                         arrowprops=dict(arrowstyle="-|>", color=col, lw=0.9, mutation_scale=7), zorder=3)
 
-
-axa.text(0, 42, "RBP-ARK (eCLIP)", fontsize=6.6, color=BLUE, fontweight="bold")
-axa.text(0, 17.2, "encodeproject.org (shRNA knockdown)", fontsize=6.6, color=ORANGE, fontweight="bold")
-box(0, 21, 21, 18.5, "Gene search", "PICALM · ENCORE/ENCORE2\nQKI windows\nCoordinate View: where", BLUE)
-box(25, 21, 21, 18.5, "Experiment detail", "QKI ×3 (K562 ×2, HepG2)\nQC · UCSC track hub\nreproducible windows .tsv", BLUE)
-box(50, 21, 21, 18.5, "Download", "BDBag / API file list\nGlobus (bulk)", BLUE)
-box(0, 0, 21, 15, "shRNA RNA-seq", "target = QKI\nK562 / HepG2 vs control", ORANGE)
-box(25, 0, 21, 15, "Differential splicing", "rMATS skipped exons (SE)\nhg19 → lift to GRCh38", ORANGE)
-box(50, 0, 21, 15, "ΔPSI per exon", "knockdown vs\nnon-targeting control", ORANGE)
-box(77, 7, 22, 22, "Integrate", "isoforms + binding (b, c)\nsplicing change (d)\ngenome-wide rule (e)", INK)
-arrow(21.6, 30, 24.4, 30); arrow(46.6, 30, 49.4, 30); arrow(21.6, 7.5, 24.4, 7.5); arrow(46.6, 7.5, 49.4, 7.5)
-arrow(71.6, 30, 76.4, 23.5); arrow(71.6, 7.5, 76.4, 14.5)
+# both lanes converge on the integration card, which previews e with a small splice map
+IX, IY, IW, IH = 79.0, 3.5, 20.5, 35.0
+for ys, rad in ((31.0, -0.25), (9.0, 0.25)):
+    axa.annotate("", xy=(IX - 0.4, IY + IH / 2 + (3 if ys > 20 else -3)), xytext=(74.2, ys),
+                 arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=0.9, mutation_scale=7, connectionstyle=f"arc3,rad={rad}"))
+axa.add_patch(FancyBboxPatch((IX, IY), IW, IH, boxstyle="round,pad=0,rounding_size=1.2", fc="#f6f6f4", ec=INK, lw=0.9))
+badge(IX + 2.4, IY + IH - 3.6, 7, INK)
+axa.text(IX + 4.8, IY + IH - 3.6, "Integrate", fontsize=6.5, fontweight="bold", va="center")
+_gx0, _gx1, _gy = IX + 2.0, IX + IW - 2.0, IY + IH - 15.0      # the splice-map glyph: exon, intron, cassette, intron, exon
+_xs = np.linspace(_gx0, _gx1, 200)
+_u = (_xs - _gx0) / (_gx1 - _gx0)
+axa.plot(_xs, _gy + 2.2 + 4.2 * np.exp(-((_u - 0.33) / 0.045) ** 2) + 1.2 * np.exp(-((_u - 0.75) / 0.07) ** 2),
+         color=ORANGE, lw=0.9, zorder=3)
+axa.plot(_xs, _gy + 2.2 + 3.4 * np.exp(-((_u - 0.6) / 0.05) ** 2), color=BLUE, lw=0.9, zorder=3)
+axa.plot([_gx0, _gx1], [_gy, _gy], color=MUTED, lw=0.6, zorder=3)
+for _u0, _w, _fc in ((0.0, 0.1, GRAY), (0.44, 0.12, "white"), (0.9, 0.1, GRAY)):
+    axa.add_patch(Rectangle((_gx0 + _u0 * (_gx1 - _gx0), _gy - 1.0), _w * (_gx1 - _gx0), 2.0, fc=_fc, ec=MUTED, lw=0.6,
+                            zorder=4))
+for k, (what, panels) in enumerate((("binding + isoforms", "b, c"), ("splicing change", "d"), ("metagene splice maps", "e"))):
+    yy = IY + IH - 21.0 - k * 5.2
+    axa.text(IX + 1.6, yy, what, fontsize=5.6, color=INK2, va="center")
+    axa.text(IX + IW - 1.4, yy, panels, fontsize=5.8, fontweight="bold", va="center", ha="right")
+axa.text(IX + IW / 2, -1.2, "numbers = workflow notebooks 01–07", fontsize=5.0, color=MUTED, ha="center", va="top",
+         style="italic")
 
 
 # ---------- b, c: Coordinate View rows (same seven eCLIP experiments) with the isoform track, one panel per exon ----------
@@ -196,7 +237,7 @@ if n_short:
     axb.text(85989800 + 15, ylanes[0] + 0.5, f"+{n_short} use a 129-nt form (alt. 3′ss)", fontsize=4.6, color=MUTED,
              ha="right", va="center")
 axb.set_xlabel("chr11 (GRCh38), drawn 5′ → 3′ on the minus strand", fontsize=6.2)
-axc.set_xlabel("chr11 (GRCh38), 5′ → 3′, 11.6 kb downstream of b", fontsize=6.2)
+axc.set_xlabel("chr11, 5′ → 3′, 11.6 kb downstream of b", fontsize=6.2)
 _tb = axb.get_position(); _tc = axc.get_position()
 letter(0.015, _tb.y1 + 0.012, "b"); letter(_tc.x0 - 0.03, _tc.y1 + 0.012, "c")
 fig.text(_tb.x0 - 0.2, _tb.y1 + 0.022, "150-nt exon: QKI binds upstream", fontsize=6.8, fontweight="bold",
@@ -473,8 +514,8 @@ for k, (rbp, ds_, kd, rep, ylab, dark, traces) in enumerate(MAPS):
             axt.yaxis.tick_right(); axt.spines["left"].set_visible(False); axt.spines["right"].set_visible(True)
 _pe = G[2, 1].get_position(fig)
 letter(_pe.x0 - 0.115, _pd.y1 + 0.022, "e")
-fig.text(_pe.x0 - 0.085, _pd.y1 + 0.022, "rbp-maps metagene splice maps and the PICALM exons' own traces", fontsize=6.8, fontweight="bold",
-         va="bottom")
+fig.text(_pe.x0 - 0.085, _pd.y1 + 0.0315, "rbp-maps metagene splice maps\nand the PICALM exons' own traces", fontsize=6.8,
+         fontweight="bold", va="top", linespacing=1.25)
 fig.legend(handles=[Line2D([], [], color=ORANGE, lw=1.2), Line2D([], [], color=BLUE, lw=1.2),
                           (Rectangle((0, 0), 1, 1, color=GRAY, alpha=0.45), Line2D([], [], color=INK, lw=0.6))],
                  labels=["more included after KD", "less included after KD", "native cassette exons"],
@@ -485,5 +526,6 @@ fig.text(_pe.x0 + _pe.width / 2 - 0.03, 0.068, "50 nt exon + 300 nt intron aroun
 fig.text(0.5, 0.01, "DRAFT Case Study 3 figure · data from rbp-ark.com (Skipper 2.0.0) and encodeproject.org"
          + ("\n" + SOURCE_NOTE if SOURCE_NOTE else ""), ha="center", fontsize=5.6, color=MUTED, linespacing=1.4)
 out = "CS3_PICALM_QKI_draft"
+warn_if_cut_off(fig)
 fig.savefig(out + ".pdf"); fig.savefig(out + ".png", dpi=220)
 print("saved", out)
