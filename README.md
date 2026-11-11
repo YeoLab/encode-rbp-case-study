@@ -18,6 +18,7 @@ There are three ways in, from quickest to most complete.
 
 | Folder | Contents |
 | --- | --- |
+| `manuscript/` | The case study text, figure legend and references (`case_study_QKI_PICALM.docx`) |
 | `figures/` | The figure (`CS3_PICALM_QKI_draft.png`, `.pdf`), sashimi plots of both exons, and the data behind the panels |
 | `data_and_code/picalm/` | `make_fig.py` and its inputs: PICALM windows and transcripts, knockdown statistics, and the splice-map lines |
 | `notebooks/` | The full pipeline (00 to 05) and `cs3_utils.py` |
